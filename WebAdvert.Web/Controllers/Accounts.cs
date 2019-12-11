@@ -139,7 +139,7 @@ namespace WebAdvert.Web.Controllers
                 return View(model);
             }
 
-            var result = await (userManager as CognitoUserManager<CognitoUser>).SendEmailConfirmationTokenAsync(user);
+            var result = await (userManager as CognitoUserManager<CognitoUser>).ResetPasswordAsync(user);
             if (!result.Succeeded)
             {
                 ModelState.AddModelError("PasswordReset", "Cannot send reset email for this user");

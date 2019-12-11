@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebAdvert.Web.Interfaces;
+using WebAdvert.Web.ServiceClients;
+using WebAdvert.Web.Services;
 
 namespace WebAdvert.Web
 {
@@ -23,7 +26,7 @@ namespace WebAdvert.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCognitoIdentity(config => 
+            services.AddCognitoIdentity(config =>
             {
                 // these password requirements are set in cognito config at aws 
                 // but because of a bug it must be set here too(might can be removed already)
@@ -41,6 +44,8 @@ namespace WebAdvert.Web
             {
                 options.LoginPath = "/Accounts/Login";
             });
+            services.AddTransient<IFileUploader, S3FileUploader>();
+            services.AddHttpClient<IAdvertApiClient, AdvertClient>();
             services.AddControllersWithViews();
         }
 
